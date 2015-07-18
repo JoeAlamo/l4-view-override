@@ -24,8 +24,8 @@ class ViewOverrideServiceProvider extends ViewServiceProvider {
         $this->app->bindShared('view.finder', function($app)
         {
             $paths = $app['config']['view.paths'];
-            if (\Session::has('override')) {
-                $customFolder = \Session::get('override');
+            if ($this->app->session->has('override')) {
+                $customFolder = $this->app->session->get('override');
                 array_unshift($paths, "$paths[0]/../viewoverrides/$customFolder");
             }
 
