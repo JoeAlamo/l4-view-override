@@ -119,10 +119,11 @@ return array(
 		'Illuminate\Session\SessionServiceProvider',
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
-		'Illuminate\View\ViewServiceProvider',
+		//'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
         // Custom Service Providers
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+        'app\Extensions\ViewOverride\ViewOverrideServiceProvider'
 	),
 
 	/*
