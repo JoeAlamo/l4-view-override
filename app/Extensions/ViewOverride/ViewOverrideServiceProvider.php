@@ -9,31 +9,27 @@
 namespace app\Extensions\ViewOverride;
 
 
+use Illuminate\View\FileViewFinder;
 use Illuminate\View\ViewServiceProvider;
 
 class ViewOverrideServiceProvider extends ViewServiceProvider {
 
-    public function registerFactory()
+    /**
+     * Register the view finder implementation.
+     *
+     * @return void
+     */
+    public function registerViewFinder()
     {
-        $this->app->bindShared('view', function($app)
+        $this->app->bindShared('view.finder', function($app)
         {
-            // Next we need to grab the engine resolver instance that will be used by the
-            // environment. The resolver will be used by an environment to get each of
-            // the various engine implementations such as plain PHP or Blade engine.
-            $resolver = $app['view.engine.resolver'];
+            $paths = $app['config']['view.paths'];
+            if (\Session::has('override')) {
+                $customFolder = \Session::get('override');
+                array_unshift($paths, "$paths[0]/../viewoverrides/$customFolder");
+            }
 
-            $finder = $app['view.finder'];
-
-            $env = new Factory($resolver, $finder, $app['events']);
-
-            // We will also set the container instance on this view environment since the
-            // view composers may be classes registered in the container, which allows
-            // for great testable, flexible composers for the application developer.
-            $env->setContainer($app);
-
-            $env->share('app', $app);
-
-            return $env;
+            return new FileViewFinder($app['files'], $paths);
         });
     }
 

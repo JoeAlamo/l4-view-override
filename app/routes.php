@@ -15,3 +15,23 @@ Route::get('/', function()
 {
     dd(app()->view);
 });
+
+Route::get('/enable-override', function () {
+    Session::put('override', 'example');
+
+    return Redirect::back();
+});
+
+Route::get('/disable-override', function () {
+    Session::forget('override');
+
+    return Redirect::back();
+});
+
+Route::get('/test', function () {
+    return View::make('hello');
+});
+
+Route::get('/test2', function () {
+    return View::make('dontoverride');
+});
